@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="imagem/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="tablecss/table.css">
+    <link href="https://fonts.googleapis.com/css2?family=NomeDaFonte:wght@400;700&display=swap" rel="stylesheet">
+    <title>Circuito do saber - Placar</title>
+</head>
+<body>
+    <div class="conteiner">
+        <h1>Placar das Equipes</h1>
+        <div id="placar"></div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            var equipes = JSON.parse(localStorage.getItem('equipes')) || [];
+            var placarDiv = document.getElementById('placar');
+
+            if (equipes.length === 0) {
+                placarDiv.innerHTML = '<p>Nenhuma equipe respondeu ainda.</p>';
+            } else {
+                var tabela = '<table border="1"><tr><th>Nome da Equipe</th><th>Pontos</th><th>Respostas</th></tr>';
+                
+                equipes.forEach(function(equipe) {
+                    var respostas = equipe.respostas.map(function(resposta, index) {
+                        return `<p>Pergunta ${index + 1}: ${resposta.correta ? 'Correta' : 'Errada'}</p>`;
+                    }).join('');
+                    
+                    tabela += `<tr>
+                        <td>${equipe.nome}</td>
+                        <td>${equipe.pontuacao}</td>
+                        <td>${respostas}</td>
+                    </tr>`;
+                });
+
+                tabela += '</table>';
+                placarDiv.innerHTML = tabela;
+            }
+        };
+    </script>
+
+
+</body>
+</html>
